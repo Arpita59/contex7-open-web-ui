@@ -1,17 +1,17 @@
-# Use lightweight Python image
+# Use a lightweight Python base image
 FROM python:3.11-slim
 
-# Set working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Install Python packages mcpo and uv
-RUN pip install --no-cache-dir mcpo uv
+# Install mcpo using pip (no uv, no uvx, just pip)
+RUN pip install mcpo
 
 # Copy your config file into the container
-COPY context7-mcp.json ./context7-mcp.json
+COPY context7-mcp.json .
 
-# Expose port 8000 (optional, for clarity)
+# Expose the port mcpo runs on
 EXPOSE 8000
 
-# Start the mcpo server with your config
-CMD ["uv", "mcpo", "--host", "0.0.0.0", "--port", "8000", "--config", "context7-mcp.json"]
+# Run the mcpo server with your config
+CMD ["mcpo", "--config", "context7-mcp.json"]
